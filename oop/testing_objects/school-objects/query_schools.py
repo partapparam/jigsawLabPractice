@@ -26,7 +26,9 @@ def largest_total_score_school(schools):
     return max(schools, key=lambda school: school.total_score())
 
 def average_total_score_of(schools):
-    
+    total_score_for_school = [school.total_score() for school in schools]
+    number_of_schools = len(total_score_for_school)
+    return int(sum(total_score_for_school)/number_of_schools)
 
 def largest_average_student_attendance(schools):
-    pass
+    return max(schools, key=lambda school: school.avg_student_attendance())
