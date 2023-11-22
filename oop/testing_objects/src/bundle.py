@@ -13,4 +13,4 @@ class Bundle:
     def holdingDays(self):
         month_difference = self.pickup_month - self.dropoff_month
         day_difference = self.pickup_day -  self.dropoff_day
-        return month_difference*30 + day_difference
+        return month_difference*30 + day_differencecd
