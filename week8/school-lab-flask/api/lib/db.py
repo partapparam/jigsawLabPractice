@@ -20,14 +20,19 @@ import psycopg2
 
 # conn = psycopg2(DB_NAME, DB_USER, 'password')
 
-def get_db(database, user):
+def get_db():
     # check to see if db exists in the 'g' context
     if 'db' not in g:
         # if not, we create it with the current app, the requesting app's context
         g.db = psycopg2(dbname=current_app.config['DB_NAME'], user = current_app.config['DB_USER'], password = current_app['PASSWORD'])
     return g.db 
 
-def save(obj):
+def close_db():
+    db = g.pop('db', None)
+    if db is not None:
+        db.close()
+
+def save(obj, conn):
     # save query requires: table, column names and values
     # obj.
     table_name = obj.__table__
@@ -50,4 +55,19 @@ def keys(obj):
 def values(obj):
     return obj.__dict__.values()
 
+def build_from_record(Class, record):
+    breakpoint()
+    if not record: return None
+    attr = dict(zip(Class.columns, record))
+    obj = Class()
+    obj.__dict__ = attr
+    return obj
 
+def build_from_records(obj, records):
+    pass
+def find_all(obj, conn):
+    query = """SELECT * FROM %s"""
+    cursor = conn.cursor()
+    cursor.execute(query, (obj.__table__))
+    records = cursor.fetchall()
+    return records
