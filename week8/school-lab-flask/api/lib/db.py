@@ -52,11 +52,13 @@ def save(obj, conn):
     return build_from_record(type(obj), record)
 
 def keys(obj):
-    key_list = obj.__dict__.keys()
-    return ', '.join(key_list)
+    # we only want to return the keys that are currently in the dict from our columns in db. ID does not need to be created by us 
+    selected = [attr for attr in obj.columns if attr in obj.__dict__.keys()]
+    return ', '.join(selected)
 
 def values(obj):
-    return obj.__dict__.values()
+    obj_dict = obj.__dict__
+    return [obj_dict[attr] for attr in obj.columns if attr in obj_dict.keys()]
 
 def build_from_record(Class, record):
     # check for missing record, it nothing that return None
@@ -79,7 +81,7 @@ def find_all(Class, conn):
     cursor = conn.cursor()
     cursor.execute(query)
     records = cursor.fetchall()
-    return records
+    return [build_from_records(Class, records)]
 
 def find_by_id(Class, id, conn):
     query = f"""SELECT * FROM {Class.__table__} WHERE id = %s"""

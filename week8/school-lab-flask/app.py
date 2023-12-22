@@ -10,6 +10,6 @@ conn = psycopg2.connect(database=TEST_DB_NAME, user=DB_USER)
 # if __name__ == '__main__':
 #     app.run(debug=True)
 
-s = api.models.Student(id=14, student_name='param')
+s = api.models.Student(id=15, student_name='param')
 r = api.db.save(obj=s, conn=conn )
 print(r.__dict__)
