@@ -74,12 +74,23 @@ def build_from_record(Class, record):
 def build_from_records(obj, records):
     return [build_from_record(record) for record in records] 
 
-def find_all(obj, conn):
-    query = """SELECT * FROM %s"""
+def find_all(Class, conn):
+    query = f"""SELECT * FROM {Class.__table__}"""
     cursor = conn.cursor()
-    cursor.execute(query, (obj.__table__))
+    cursor.execute(query)
     records = cursor.fetchall()
     return records
 
-def find_by_id(id, conn):
-    
+def find_by_id(Class, id, conn):
+    query = f"""SELECT * FROM {Class.__table__} WHERE id = %s"""
+    cursor = conn.cursor()
+    cursor.execute(query, (id,))
+    record = cursor.fetchone()
+    return build_from_record(Class, record)
+
+def find_by_name(Class, name, conn):
+    query = f"""SELECT * FROM {Class.__table__} WHERE name = %s"""
+    cursor = conn.cursor()
+    cursor.execute(query, (name, ))
+    record = cursor.fetchone()
+    return build_from_record(Class=Class, record = record)
