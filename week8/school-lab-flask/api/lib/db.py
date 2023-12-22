@@ -94,3 +94,17 @@ def find_by_name(Class, name, conn):
     cursor.execute(query, (name, ))
     record = cursor.fetchone()
     return build_from_record(Class=Class, record = record)
+
+def drop_records(table, conn, cursor):
+    # delete all the records in a table
+    query = f"DELETE FROM {table}"
+    cursor.execute(query)
+    conn.commit()
+
+def drop_tables(tables, conn, cursor):
+    for table in tables:
+        drop_records(table, conn, cursor)
+
+def drop_all_tables(conn, cursor):
+    tables = ['students', 'teachers', 'courses', 'seats']
+    drop_tables(tables, conn, cursor)
