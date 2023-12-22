@@ -37,16 +37,19 @@ def save(obj, conn):
     # obj.
     table_name = obj.__table__
     columns = keys(obj)
+    # get values
     value_list = values(obj)
+    # create a values insert list (%s) * len of values
     values_string = ', '.join(len(value_list) * ['%s'])
     query = f"INSERT INTO {table_name} ({columns}) VALUES ({values_string})"
     cursor = conn.cursor()
-    cursor.execute(query, values)
+    cursor.execute(query, tuple(value_list))
     conn.commit()
-    get_query = """SELECT * FROM %s ORDER BY id LIMIT 1"""
-    cursor.execute(get_query, (table_name,))
-    saved = cursor.fetchone()
-    return saved
+    # return the added value from the table
+    get_query = f"SELECT * FROM {table_name} ORDER BY id DESC LIMIT 1"
+    cursor.execute(get_query, table_name)
+    record = cursor.fetchone()
+    return build_from_record(type(obj), record)
 
 def keys(obj):
     key_list = obj.__dict__.keys()
@@ -56,18 +59,27 @@ def values(obj):
     return obj.__dict__.values()
 
 def build_from_record(Class, record):
-    breakpoint()
+    # check for missing record, it nothing that return None
     if not record: return None
-    attr = dict(zip(Class.columns, record))
+    # get Class columns
+    cols = Class.columns
+    # create a new Class object
     obj = Class()
+    # zip together cols and record
+    attr = dict(zip(cols, record))
+    # set attr to object dict
     obj.__dict__ = attr
     return obj
 
 def build_from_records(obj, records):
-    pass
+    return [build_from_record(record) for record in records] 
+
 def find_all(obj, conn):
     query = """SELECT * FROM %s"""
     cursor = conn.cursor()
     cursor.execute(query, (obj.__table__))
     records = cursor.fetchall()
     return records
+
+def find_by_id(id, conn):
+    
