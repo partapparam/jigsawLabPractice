@@ -8,6 +8,5 @@ class Course:
             if key not in self.columns:
                 raise f'{key} not in {self.columns}'
             
-        for k, v in kwargs.items:
+        for k, v in kwargs.items():
             setattr(self, k, v)
-            

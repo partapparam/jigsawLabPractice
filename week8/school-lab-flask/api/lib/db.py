@@ -10,15 +10,14 @@
 #drop record
 # get db
 
-from settings import TEST_DB_NAME, TEST_DB_USER, DB_NAME, DB_USER
+from settings import TEST_DB_NAME, TEST_DB_USER, DB_NAME, DB_USER, PASSWORD
 from flask import g
 from flask import current_app
 import psycopg2
 
-# test_conn = psycopg2(TEST_DB_NAME, TEST_DB_USER, 'password')
-# test_cursor = test_conn.cursor()
+test_conn = psycopg2.connect(database=TEST_DB_NAME, user=TEST_DB_USER, password=PASSWORD)
+test_cursor = test_conn.cursor()
 
-# conn = psycopg2(DB_NAME, DB_USER, 'password')
 
 def get_db():
     # check to see if db exists in the 'g' context
