@@ -14,3 +14,12 @@ class TexasDrinksAPI:
     def run(self, params = {'location_name': 'HYATT HOUSE DALLAS/UPTOWN'}):
         response = requests.get(self.ROOT_URL, params)
         return response.json()
+    
+
+# One step further. Now we can change the API we call.
+class RequestAPI:
+    def __init__(self, url):
+        self._url = url
+    def run(self, params = {}):
+        response = requests.get(self._url, params)
+        return response.json()
