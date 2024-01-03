@@ -1,13 +1,8 @@
 import requests
+from drinksClient import DrinksClient
 from receipt import Receipt
 
 class ReceiptBuilder:
-    # fetch the receipts from the API
-    def fetch_receipts(self):
-        response = requests.get("https://data.texas.gov/resource/naix-2893.json?location_name=MAX%27S%20WINE%20DIVE")
-        restaurant_receipts = response.json()
-        return restaurant_receipts
-    
     # convert the receipts into Receipt Object Instances
     def create_receipt(self, receipt):
         return Receipt(**receipt)
@@ -21,6 +16,7 @@ class ReceiptBuilder:
         return receipts
 #   run the above methods and return the Receipt instances
     def run(self):
-        self._receipt_data = self.fetch_receipts()
+        self._request_api = DrinksClient()
+        self._receipt_data = self._request_api.run()
         self._receipts = self.receipts_data_to_objects(self._receipt_data)
         return self._receipts
