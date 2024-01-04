@@ -7,3 +7,5 @@ class ApiClient:
     def run(self, params = {}):
         response = requests.get(self.URL, params=params)
         return response.json()
+    
+    
