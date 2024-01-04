@@ -3,7 +3,7 @@
 
 from flask import Flask 
 from models.client import ApiClient
-from models.book_adapter import BookAdapter
+from models.author_adapter import AuthorAdapter
 
 app = Flask(__name__)
 
@@ -11,11 +11,9 @@ app = Flask(__name__)
 def artist(author):
     client = ApiClient(URL=f'https://openlibrary.org/search/authors.json?q={author}')
     response = client.run()
-    books = BookAdapter().run(response.docs)
-    return response
-author = 'Kevin Wilson'
-client = ApiClient(URL=f'https://openlibrary.org/search/authors.json?q={author}')
-response = client.run()
-# books = BookAdapter().run(response['docs'])
+    authors = AuthorAdapter().run(response['docs'])
+    author_dicts = [author.__dict__ for author in authors] 
+    return author_dicts
+
 
 

@@ -3,11 +3,14 @@ from models.author import Author
 
 class AuthorAdapter:
     def select_attributes(self, author):
-        return {'name': author['name'], 
-                'birth_date': author['birth_date'],
-                'id': author['id'],
-                'top_work': author['top_work'],
-                'work_count': author['work_count']
+        name = author['name']
+        id = author['key']
+        # top_work = author['top_work'] if author['top_work'] == None else ''
+        work_count = author['work_count']
+        return {'name': name, 
+                'id': id,
+                # 'top_work': top_work,
+                'work_count': work_count
                 }
     
     def run(self, authors):
