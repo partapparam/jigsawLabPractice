@@ -1,5 +1,6 @@
 from artist import Artist
 
+
 class ArtistAdapter:
     def select_attributes(self, artist):
         return {'name': artist['name'], 
