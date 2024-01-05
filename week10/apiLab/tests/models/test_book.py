@@ -15,5 +15,11 @@ def test_select_attributes()-> None:
     assert book_attrs['id'] == book['key']
     assert book_attrs['published'] == book['first_publish_year']
 
-def test_run():
-    pass
+def test_run() -> None:
+    books: list[dict] = [
+                        {'key': 1, 'title': 'Harry Potter', 'author_name': 'JK Rowling', 'first_publish_year': 2005, 'ISBN': 12423414, 'publisher': 'Penguin'},
+                         {'key': 2, 'title': 'Hunger games', 'author_name': 'Kevin Wilson', 'first_publish_year': 2010, 'ISBN': 232123325, 'publisher': 'Penguins'}]
+    adapted_books_list: list[Book] = BookAdapter().run(books=books)
+    assert len(adapted_books_list) == 2
+    assert adapted_books_list[0].title == 'Harry Potter'
+    assert adapted_books_list[1].title == 'Hunger games'
